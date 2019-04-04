@@ -4,8 +4,8 @@ void initTwi(void)
 {
     // TWI Frequency
     // F_CPU / [(16+2(TWBR)*(Prescaler Val)]
-    // 8MHz / [16+2(32)*(1) = 100KHz
-    TWBR = 32;
+    // 8MHz / [16+2(2)*(1) = 400KHz
+    TWBR = 2;
 
     // Enable TWI
     TWCR |= (1 << TWEN);

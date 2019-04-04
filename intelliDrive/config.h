@@ -9,6 +9,12 @@
 #include "twi.h"
 #include "USART.h"
 
+/* Configures timer used for sample time of velocity/ref yaw/PID */
+void enableTimer(void)
+
+/* Configures AVR interrupt for PWM signal input sampling */
+void enablePWMInputSampling(void)
+
 /* Configures AVR timer and output pins for steering PWM generation */
 void enablePWMSteeringOutput(void);
 
