@@ -1,0 +1,11 @@
+Pin Definitions:
+
+PIN2 - PD0 - RXD - USART Serial
+PIN3 - PD1 - TXD - USART Serial
+
+PIN13 - PD7 - PCINT23 - PWM ESC Pulse Duration Interrupt
+PIN14 - PB0 - PCINT0 - IMU Data Ready Interrupt
+
+PIN27 - PC4 - SDA - i2c Data
+PIN28 - PC5 - SCL - i2c Clock
+
