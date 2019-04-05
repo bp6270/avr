@@ -4,6 +4,7 @@ MCU = atmega328p
 F_CPU = 8000000UL
 BAUD = 9600UL
 LIBDIR = ../lib
+LOCLIBDIR = ./lib
 
 # Programmer Defaults # -------------------------------------------------------
 
@@ -22,12 +23,12 @@ AVRDUDE = avrdude
 
 # File locations
 TARGET = $(lastword $(subst /, ,$(CURDIR)))
-SOURCES = $(wildcard *.c $(LIBDIR)/*.c)
+SOURCES = $(wildcard *.c $(LOCLIBDIR)/*.c $(LIBDIR)/*.c)
 OBJECTS = $(SOURCES:.c=.o)
 HEADERS = $(SOURCES:.c=.h)
 
 # Flags
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LIBDIR)
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LOCLIBDIR) -I$(LIBDIR)
 CFLAGS = -Os -g -std=gnu99 -Wall
 #CFLAGS = -O0 -ggdb -std=gnu99 -Wall
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
@@ -76,7 +77,9 @@ size: $(TARGET).elf
 
 clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom; \
-	cd ../lib/; \
+	cd ./lib; \
+	rm -f *.o; \
+	cd ../../lib/; \
 	rm -f *.o
 
 flash: $(TARGET).hex
