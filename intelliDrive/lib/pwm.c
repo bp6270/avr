@@ -1,0 +1,87 @@
+#include "pwm.h"
+
+//==============================================================================
+
+ISR(PCINT2_vect)
+{
+    // If pin change is L->H, record start of pulse
+    if (bit_is_set(PIND, PD7))
+    {
+        steering_start_time = TCNT1;
+    }
+    else
+    {
+        // Do not log if start sampling is 0 (never sampled)
+        if (steering_start_time != 0)
+        {
+            shared_steering_duration = TCNT1 - steering_start_time;
+        }
+
+        // If duration is negative, counter has overflowed so compenstate
+        if (shared_steering_duration < 0)
+        {
+            shared_steering_duration += 20000;
+            shared_tx_flags |= STEERING_FLAG;
+        }
+    }
+}
+
+//==============================================================================
+
+uint8_t is_pwm_signal_available(void)
+{
+    if (shared_tx_flags)
+    {   
+        cli();
+        steering_duration = shared_steering_duration;
+        shared_tx_flags = 0x00;
+        sei();
+
+        return 1;
+    }
+
+    return 0;
+}
+
+//==============================================================================
+
+uint16_t get_pwm_signal_duration(void)
+{
+    return steering_duration;
+}
+
+//==============================================================================
+
+int16_t pwm_to_steering_rad_milli(uint16_t steering_duration)
+{
+    // slope = -0.0326, int = 50.8788
+    // we must scale by 1024 to accomodate slope
+    // then rescale to get normalized degrees
+    // 1 deg ~= 17.8722 millirads
+    int32_t scaled_deg = (-33 * steering_duration) + 50154;
+    int8_t deg = scaled_deg >> 10;
+
+    return deg * 18;
+}
+
+//==============================================================================
+
+uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli)
+{
+    // see pwm_to_steering_rad_milli() on how to create inverse
+    int8_t deg = divide_round_up(steering_rad_milli, 18);
+    int32_t scaled_deg = deg << 10;
+    
+    uint16_t pwm_duration = divide_round_up(scaled_deg - 50154, -33);
+
+    // bind to the acceptable PWM range
+    if (pwm_duration < 1000)
+        return 1000;
+
+    if (pwm_duration > 2000)
+        return 2000;
+
+     return pwm_duration;
+}
+
+//==============================================================================

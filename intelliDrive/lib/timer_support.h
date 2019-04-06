@@ -8,20 +8,18 @@
 #define TIMER_SUPPORT_H_
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
-/* Checks if timer has oveflowed */
-uint8_t isTimerOverFlowed(void);
+static volatile uint16_t shared_ovr_cnt = 0;
 
-/* Used to reset timer to 0 */
-void resetTimer(void);
+void reset_timer(void);
 
-/* Used to clear overflow flag */
-void clearOverflowFlag(void);
+void reset_ovr_cnt(void);
 
-/* Used to reset timer to 0 and clear overflow flag */
-void resetTimerAndOvr(void);
+void reset_ovr_cnt_and_timer(void);
 
-/* Sets timer to an unsigned 8 bit value */
-void setTimer(uint8_t timerVal);
+uint16_t get_ovr_cnt(void);
+
+void set_timer(uint8_t timer_val);
 
 #endif /* TIMER_SUPPORT_H_ */

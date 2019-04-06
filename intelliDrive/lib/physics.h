@@ -4,7 +4,7 @@
 #include "MPU6050_support.h"
 
 /* Division operator that rounds up result */
-int64_t divideRoundInt(int64_t dividend, int64_t divisor);
+int64_t divide_round_up(int64_t dividend, int64_t divisor);
 
 /* Generates velocities (in micrometers) given a set of accelerations */
 void gen_velocities_micro(

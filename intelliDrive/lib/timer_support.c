@@ -1,34 +1,38 @@
 #include "timer_support.h"
 
-
-uint8_t isTimerOverFlowed(void)
+ISR(TIMER0_OVF_vect)
 {
-    // Overflowed if TOV0 is set to 0
-    if ((TIFR0 & (1 << TOV0)))
-    {
-        return 0;
-    }
-
-    return 1;
+    shared_ovr_cnt += 1;
 }
 
-void resetTimer(void)
+void reset_timer(void)
 {
     TCNT0 = 0x00;
 }
 
-void clearOverflowFlag(void)
+void reset_ovr_cnt(void)
 {
-    TIFR0 |= (1 << TOV0);
+    cli();
+    shared_ovr_cnt = 0;
+    sei();
 }
 
-void resetTimerAndOvr(void)
+void reset_ovr_cnt_and_timer(void)
 {
-    resetTimer();
-    clearOverflowFlag();
+    reset_ovr_cnt();
+    reset_timer();
 }
 
-void setTimer(uint8_t timerVal)
+uint16_t get_ovr_cnt(void)
 {
-    TCNT0 = timerVal;
+    cli();
+    uint16_t ovr_cnt = shared_ovr_cnt;
+    sei();
+    
+    return ovr_cnt;
+}
+
+void set_timer(uint8_t timer_val)
+{
+    TCNT0 = timer_val;
 }
