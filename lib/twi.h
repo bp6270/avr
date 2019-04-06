@@ -8,30 +8,30 @@
 #include <avr/io.h>
 
 // Init bus speed
-void initTwi(void);
+void init_twi(void);
 
 // Wait until TWI communication ready
-void twiWaitUntilReady(void);
+void twi_wait_until_ready(void);
 
 // Sends start signal
-void twiStart(void);
+void twi_start(void);
 
 // Sends stop signal
-void twiStop(void);
+void twi_stop(void);
 
 // Send out 8-bit data
-void twiSend(uint8_t data);
+void twi_send(uint8_t data);
 
 // Read from slave with ACK
-uint8_t twiReadWithAck(void);
+uint8_t twi_read_with_ack(void);
 
 // Read from slave with NACK
-uint8_t twiReadWithNack(void);
+uint8_t twi_read_with_nack(void);
 
 // Send byte to register in TWI device
-void twiSendByte(uint8_t i2cAddr, uint8_t regAddr, uint8_t byte);
+void twi_send_byte(uint8_t twi_addr, uint8_t reg_addr, uint8_t byte);
 
 // Read byte from register in TWI device
-uint8_t twiReadByte(uint8_t i2cAddr, uint8_t regAddr);
+uint8_t twi_read_byte(uint8_t twi_addr, uint8_t reg_addr);
 
 #endif /* TWI_H_ */

@@ -1,6 +1,8 @@
 #include "USART.h"
 
-void initUSART(void)
+
+
+void init_USART(void)
 {
     // Set BAUD rate (must have macro defined)
     UBRR0H = UBRRH_VALUE;
@@ -17,96 +19,112 @@ void initUSART(void)
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 }
 
-uint8_t getByte(void)
+//==============================================================================
+
+uint8_t receive_byte(void)
 {
     loop_until_bit_is_set(UCSR0A, RXC0);
     return UDR0;
 }
 
-void sendByte(uint8_t byte)
+//==============================================================================
+
+void transmit_byte(uint8_t byte)
 {
     loop_until_bit_is_set(UCSR0A, UDRE0);
     UDR0 = byte;
 }
 
-void printString(const char myString[]) 
+//==============================================================================
+
+void print_string(const char string[]) 
 {
   uint8_t i = 0;
   
-  while (myString[i]) 
+  while (string[i]) 
   {
-    sendByte(myString[i]);
+    transmit_byte(string[i]);
     i++;
   }
 }
 
-void printWordAsDecimal(uint16_t word)
-{
-    sendByte('0' + (word / 10000));
-    sendByte('0' + ((word / 1000) % 10));
-    sendByte('0' + ((word / 100) % 10));
-    sendByte('0' + ((word / 10) % 10));
-    sendByte('0' + (word % 10));
-}
-void printVal(int16_t val)
-{
-    if (val < 0)
-    {   
-        sendByte('-');
-        val = val * -1; 
-    }   
+//==============================================================================
 
-    sendByte('0' + ((val / 10000) % 10));
-    sendByte('0' + ((val / 1000) % 10));
-    sendByte('0' + ((val / 100) % 10));
-    sendByte('0' + ((val / 10) % 10));
-    sendByte('0' + (val % 10));
+void print_word_as_decimal(uint16_t word)
+{
+    transmit_byte('0' + (word / 10000));
+    transmit_byte('0' + ((word / 1000) % 10));
+    transmit_byte('0' + ((word / 100) % 10));
+    transmit_byte('0' + ((word / 10) % 10));
+    transmit_byte('0' + (word % 10));
 }
 
+//==============================================================================
 
-void printVal32(int32_t val)
+void print_val(int16_t val)
 {
     if (val < 0)
     {   
-        sendByte('-');
+        transmit_byte('-');
         val = val * -1; 
     }   
 
-    sendByte('0' + ((val / 1000000000) % 10));
-    sendByte('0' + ((val / 100000000) % 10));
-    sendByte('0' + ((val / 10000000) % 10));
-    sendByte('0' + ((val / 1000000) % 10));
-    sendByte('0' + ((val / 100000) % 10));
-    sendByte('0' + ((val / 10000) % 10));
-    sendByte('0' + ((val / 1000) % 10));
-    sendByte('0' + ((val / 100) % 10));
-    sendByte('0' + ((val / 10) % 10));
-    sendByte('0' + (val % 10));
+    transmit_byte('0' + ((val / 10000) % 10));
+    transmit_byte('0' + ((val / 1000) % 10));
+    transmit_byte('0' + ((val / 100) % 10));
+    transmit_byte('0' + ((val / 10) % 10));
+    transmit_byte('0' + (val % 10));
 }
 
-uint16_t getNumber(void)
+//==============================================================================
+
+void print_val32(int32_t val)
+{
+    if (val < 0)
+    {   
+        transmit_byte('-');
+        val = val * -1; 
+    }   
+
+    transmit_byte('0' + ((val / 1000000000) % 10));
+    transmit_byte('0' + ((val / 100000000) % 10));
+    transmit_byte('0' + ((val / 10000000) % 10));
+    transmit_byte('0' + ((val / 1000000) % 10));
+    transmit_byte('0' + ((val / 100000) % 10));
+    transmit_byte('0' + ((val / 10000) % 10));
+    transmit_byte('0' + ((val / 1000) % 10));
+    transmit_byte('0' + ((val / 100) % 10));
+    transmit_byte('0' + ((val / 10) % 10));
+    transmit_byte('0' + (val % 10));
+}
+
+//==============================================================================
+
+uint16_t get_number(void)
 {
     char thousands = '0';
     char hundreds = '0';
     char tens = '0';
     char ones = '0';
-    char currentChar = '0';
+    char current_char = '0';
 
     do
     {
         thousands = hundreds;
         hundreds = tens;
         tens = ones;
-        ones = currentChar;
-        currentChar = getByte();
-        sendByte(currentChar);
+        ones = current_char;
+        current_char = receive_byte();
+        transmit_byte(current_char);
         
-    } while (currentChar != '\r');
+    } while (current_char != '\r');
 
-    sendByte('\n');
+    transmit_byte('\n');
 
     return (1000 * (thousands - '0') +
             100 * (hundreds - '0') +
             10 * (tens - '0') +
             (ones - '0'));
 }
+
+//==============================================================================

@@ -22,7 +22,7 @@ int main(void)
     int64_t tf_den = 0;
     int16_t timer_overhead = 0;
 
-    bootstrapHardware();
+    bootstrap_hardware();
     calibrate_sensors(&acc_x_offset, &yaw_offset);
     reset_ovr_cnt_and_timer();
 

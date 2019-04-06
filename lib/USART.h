@@ -15,27 +15,27 @@
  * multiplier.
  *
  * */
-void initUSART(void);
+void init_USART(void);
 
 /* Receive 8-bit data to data register */
-uint8_t receiveByte(void);
+uint8_t receive_byte(void);
 
 /* Transmits 8-bit data to data register */
-void sendByte(uint8_t byte);
+void transmit_byte(uint8_t byte);
 
 /* Used to transmit chars to data register */
-void printString(const char myString[]);
+void print_string(const char string[]);
 
 /* Used to take a 16-bit word and print as decimal */
-void printWordAsDecimal(uint16_t);
+void print_word_as_decimal(uint16_t word);
 
 /* Used to take a 16 bit signed number and print as decimal */
-void printVal(int16_t val);
+void print_val(int16_t val);
 
 /* Used to take a 32 bit signed number and print as decimal */
-void printVal32(int32_t val);
+void print_val32(int32_t val);
 
 /* Converts 16 bit string to integer */
-uint16_t getNumber(void);
+uint16_t get_number(void);
 
 #endif /* USART_H_ */

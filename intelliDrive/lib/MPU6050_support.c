@@ -13,8 +13,8 @@ int16_t calibrate_sensor(
 
     do {
         int16_t curr_reading =
-            (twiReadByte(device_addr, reg_addr_hi) << 8) |
-               twiReadByte(device_addr, reg_addr_lo);
+            (twi_read_byte(device_addr, reg_addr_hi) << 8) |
+               twi_read_byte(device_addr, reg_addr_lo);
 
          sensor_offset += curr_reading;
          sensor_offset += 1;
@@ -44,8 +44,8 @@ int16_t read_avg_acc_lsb(int16_t acc_offset)
 
     do {
         int16_t curr_reading =
-            (twiReadByte(MPU_ADDR, ACCEL_XOUT_H) << 8) | 
-                twiReadByte(MPU_ADDR, ACCEL_XOUT_L);
+            (twi_read_byte(MPU_ADDR, ACCEL_XOUT_H) << 8) | 
+                twi_read_byte(MPU_ADDR, ACCEL_XOUT_L);
 
         avg_acc_lsb += curr_reading;
         reading_cnt += 1;
@@ -78,8 +78,8 @@ int16_t read_avg_yaw_lsb(int16_t yaw_offset)
 
     do {
         int16_t curr_reading =
-            (twiReadByte(MPU_ADDR, GYRO_ZOUT_H) << 8) |
-                twiReadByte(MPU_ADDR, GYRO_ZOUT_L);
+            (twi_read_byte(MPU_ADDR, GYRO_ZOUT_H) << 8) |
+                twi_read_byte(MPU_ADDR, GYRO_ZOUT_L);
 
         avg_yaw_lsb += curr_reading;
         reading_cnt += 1;

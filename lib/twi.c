@@ -1,6 +1,8 @@
 #include "twi.h"
 
-void initTwi(void)
+//==============================================================================
+
+void init_twi(void)
 {
     // TWI Frequency
     // F_CPU / [(16+2(TWBR)*(Prescaler Val)]
@@ -11,63 +13,81 @@ void initTwi(void)
     TWCR |= (1 << TWEN);
 }
 
-void twiWaitUntilReady(void)
+//==============================================================================
+
+void twi_wait_until_ready(void)
 {
     loop_until_bit_is_set(TWCR, TWINT);
 }
 
-void twiStart(void)
+//==============================================================================
+
+void twi_start(void)
 {
     TWCR = ((1 << TWINT) | (1 << TWEN) | (1 << TWSTA));
-    twiWaitUntilReady();
+    twi_wait_until_ready();
 }
 
-void twiStop(void)
+//==============================================================================
+
+void twi_stop(void)
 {
     TWCR = ((1 << TWINT) | (1 << TWEN) | (1 << TWSTO));
 }
 
-void twiSend(uint8_t data)
+//==============================================================================
+
+void twi_send(uint8_t data)
 {
     TWDR = data;
     TWCR = ((1 << TWINT) | (1 << TWEN));
-    twiWaitUntilReady();
+    twi_wait_until_ready();
 }
 
-uint8_t twiReadWithAck(void)
+//==============================================================================
+
+uint8_t twi_read_with_ack(void)
 {
     TWCR = ((1 << TWINT) | (1 << TWEN) | (1 << TWEA));
-    twiWaitUntilReady();
+    twi_wait_until_ready();
 
-    return (TWDR);
+    return TWDR;
 }
 
-uint8_t twiReadWithNack(void)
+//==============================================================================
+
+uint8_t twi_read_with_nack(void)
 {
     TWCR = ((1 << TWINT) | (1 << TWEN));
-    twiWaitUntilReady();
+    twi_wait_until_ready();
 
-    return (TWDR);
+    return TWDR;
 }
 
-void twiSendByte(uint8_t i2cAddr, uint8_t regAddr, uint8_t byte)
+//==============================================================================
+
+void twi_send_byte(uint8_t twi_addr, uint8_t reg_addr, uint8_t byte)
 {
-    twiStart();
-    twiSend(i2cAddr << 1);
-    twiSend(regAddr);
-    twiSend(byte);
-    twiStop();
+    twi_start();
+    twi_send(twi_addr << 1);
+    twi_send(reg_addr);
+    twi_send(byte);
+    twi_stop();
 }
 
-uint8_t twiReadByte(uint8_t i2cAddr, uint8_t regAddr)
+//==============================================================================
+
+uint8_t twi_read_byte(uint8_t twi_addr, uint8_t reg_addr)
 {
-    twiStart();
-    twiSend(i2cAddr << 1);
-    twiSend(regAddr);
-    twiStart();
-    twiSend((i2cAddr << 1) | 0x01);
-    uint8_t byte = twiReadWithNack();
-    twiStop();
+    twi_start();
+    twi_send(twi_addr << 1);
+    twi_send(reg_addr);
+    twi_start();
+    twi_send((twi_addr << 1) | 0x01);
+    uint8_t byte = twi_read_with_nack();
+    twi_stop();
 
     return byte;
 }
+
+//==============================================================================
