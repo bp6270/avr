@@ -6,6 +6,8 @@
 #include <util/delay.h>
 
 #include "config.h"
+#include "MPU6050_support.h"
+#include "physics.h"
 #include "pid.h"
 #include "pwm.h"
 #include "timer_support.h"

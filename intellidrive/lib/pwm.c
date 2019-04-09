@@ -4,6 +4,8 @@
 
 ISR(PCINT2_vect)
 {
+    static uint16_t steering_start_time = 0;
+
     // If pin change is L->H, record start of pulse
     if (bit_is_set(PIND, PD7))
     {
@@ -33,20 +35,23 @@ uint8_t is_pwm_signal_available(void)
     if (shared_tx_flags)
     {   
         cli();
-        steering_duration = shared_steering_duration;
         shared_tx_flags = 0x00;
         sei();
 
         return 1;
     }
-
-    return 0;
+    else
+        return 0;
 }
 
 //==============================================================================
 
 uint16_t get_pwm_signal_duration(void)
 {
+    cli();
+    uint16_t steering_duration = shared_steering_duration;
+    sei();
+
     return steering_duration;
 }
 
@@ -108,6 +113,13 @@ uint16_t steering_rad_to_pwm(float steering_rad)
         return 2000;
 
      return pwm_duration;
+}
+
+//==============================================================================
+
+void write_pwm(uint16_t pwm_duration)
+{
+    OCR1A = pwm_duration;
 }
 
 //==============================================================================

@@ -11,8 +11,6 @@
 
 volatile static int16_t shared_steering_duration = 0;
 volatile static uint8_t shared_tx_flags = 0x00;
-static uint16_t steering_start_time = 0;
-static uint16_t steering_duration = 0;
 
 /* Checks if PWM duration is available and logs result */
 uint8_t is_pwm_signal_available(void);
@@ -31,5 +29,8 @@ uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli);
 
 /* Converts rad to bounded PWM duration using floating point */
 uint16_t steering_rad_to_pwm(float steering_rad);
+
+/* Writes out PWM signal to OCR1A register */
+void write_pwm(uint16_t pwm_duration);
 
 #endif /* PWM_H_ */
