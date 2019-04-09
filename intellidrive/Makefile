@@ -35,6 +35,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS = -Wl,-Map,$(TARGET).map
 LDFLAGS += -Wl,--gc-sections
+LDFLAGS += -lm
 TARGET_ARCH = -mmcu=$(MCU)
 
 # Rules

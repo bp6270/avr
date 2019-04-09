@@ -20,10 +20,16 @@ int16_t read_avg_acc_lsb(int16_t acc_offset);
 /* Converts a given acc LSB to micrometer/s^2) */
 int32_t conv_acc_lsb_to_micrometer(int16_t lsb);
 
+/* Converts a given acc LSB to m/s^2 */
+float conv_acc_lsb_to_meter(int16_t lsb);
+
 /* Basic low pass filter for yaw reading */
 int16_t read_avg_yaw_lsb(int16_t yaw_offset);
 
 /* Converts a given yaw LSB to millirads */
 int16_t conv_yaw_lsb_to_millirad(int16_t lsb);
+
+/* Converts a given yaw LSB to rads */
+float conv_yaw_to_rad(int16_t lsb);
 
 #endif
