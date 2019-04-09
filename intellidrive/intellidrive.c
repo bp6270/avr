@@ -2,14 +2,14 @@
 
 int main(void)
 {
-    int32_t vel_x_micro[2] = {0};
-    int32_t acc_x_micro = 0;
+    float vel_x[2] = {0.0};
+    float acc_x = 0.0;
     int16_t acc_x_offset = 0;
-    int16_t ref_yaw_milli[4] = {0};
+    float ref_yaw [4] = {0.0};
     int16_t yaw_offset = 0;
-    int16_t steering_rad_milli = 0;
-    int64_t tf_num = 0;
-    int64_t tf_den = 0;
+    float steering_rad = 0.0;
+    float tf_num = 0.0;
+    float tf_den = 0.0;
     int16_t timer_overhead = 0;
 
     bootstrap_hardware();
@@ -27,18 +27,11 @@ int main(void)
             continue;
         }
 
-        acc_x_micro = read_avg_acc_lsb(acc_x_offset);
-
         while ((get_ovr_cnt() + timer_overhead) < 1)
             _delay_us(TIMEOUT_US);
         
         reset_ovr_cnt_and_timer();
-        gen_velocities_micro(
-            vel_x_micro, 
-            &acc_x_micro, 
-            acc_x_offset, 
-            VEL_SAMPLE_MS
-        );
+        gen_velocities(vel_x, &acc_x, acc_x_offset, 0.002);
         timer_overhead = get_ovr_cnt();
         reset_ovr_cnt_and_timer();
 
@@ -46,15 +39,8 @@ int main(void)
             _delay_us(TIMEOUT_US);
         
         reset_ovr_cnt_and_timer();
-        steering_rad_milli = 
-            pwm_to_steering_rad_milli(get_pwm_signal_duration());
-        gen_ref_yaw_milli(
-            ref_yaw_milli,
-            vel_x_micro,
-            &steering_rad_milli,
-            &tf_num,
-            &tf_den
-        );
+        steering_rad = pwm_to_steering_rad(get_pwm_signal_duration());
+        gen_ref_yaw(ref_yaw, vel_x, &steering_rad, &tf_num, &tf_den, 0.010);
         timer_overhead = get_ovr_cnt();
         reset_ovr_cnt_and_timer();
 

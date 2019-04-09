@@ -23,7 +23,13 @@ uint16_t get_pwm_signal_duration(void);
 /* Converts PWM duration to equivalent millirad angle */
 int16_t pwm_to_steering_rad_milli(uint16_t steering_duration);
 
+/* Converts PWM duration to rad in floating point units */
+float pwm_to_steering_rad(uint16_t steering_duration);
+
 /* Converts millirad angle to bounded PWM duration */
 uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli);
+
+/* Converts rad to bounded PWM duration using floating point */
+uint16_t steering_rad_to_pwm(float steering_rad);
 
 #endif /* PWM_H_ */

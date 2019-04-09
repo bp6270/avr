@@ -54,7 +54,7 @@ uint16_t get_pwm_signal_duration(void)
 
 int16_t pwm_to_steering_rad_milli(uint16_t steering_duration)
 {
-    // slope = -0.0326, int = 50.8788
+    // slope = -0.0326, int = 50.8788 err = -1.9
     // we must scale by 1024 to accomodate slope
     // then rescale to get normalized degrees
     // 1 deg ~= 17.8722 millirads
@@ -66,6 +66,15 @@ int16_t pwm_to_steering_rad_milli(uint16_t steering_duration)
 
 //==============================================================================
 
+float pwm_to_steering_rad(uint16_t steering_duration)
+{
+    float deg = (-0.03264 * steering_duration) + 48.9788;
+
+    return deg * 0.01745;
+}
+
+//==============================================================================
+
 uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli)
 {
     // see pwm_to_steering_rad_milli() on how to create inverse
@@ -73,6 +82,23 @@ uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli)
     int32_t scaled_deg = deg << 10;
     
     uint16_t pwm_duration = divide_round_up(scaled_deg - 50154, -33);
+
+    // bind to the acceptable PWM range
+    if (pwm_duration < 1000)
+        return 1000;
+
+    if (pwm_duration > 2000)
+        return 2000;
+
+     return pwm_duration;
+}
+
+//==============================================================================
+
+uint16_t steering_rad_to_pwm(float steering_rad)
+{
+    float deg = 57.2958 * steering_rad;
+    uint16_t pwm_duration = (uint16_t) ((deg - 48.9788) / -0.03264);
 
     // bind to the acceptable PWM range
     if (pwm_duration < 1000)
