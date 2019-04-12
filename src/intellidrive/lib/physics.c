@@ -24,8 +24,9 @@ void gen_velocities_micro(
 )
 {
     static uint8_t no_movement_cnt = 0;
-
-    if (*acc_x_micro == 0)
+	*acc_x_micro = conv_acc_lsb_to_micrometer(read_avg_acc_lsb(acc_offset));
+    
+	if (*acc_x_micro == 0)
         no_movement_cnt += 1;
     else
         no_movement_cnt = 0;
@@ -34,7 +35,6 @@ void gen_velocities_micro(
         *(vel_x_micro + 1) = 0;
     else
     {
-        *acc_x_micro = conv_acc_lsb_to_micrometer(read_avg_acc_lsb(acc_offset));
         *(vel_x_micro + 1) = *vel_x_micro + divide_round_up(*acc_x_micro, t_ms);
     }
 
@@ -46,7 +46,9 @@ void gen_velocities_micro(
 void gen_velocities(float *vel_x, float *acc_x, int16_t acc_offset, float t)
 {
     static uint8_t no_movement_cnt = 0;
-
+	
+	*acc_x = conv_acc_lsb_to_meter(read_avg_acc_lsb(acc_offset));
+	
     if (*acc_x == 0.0)
         no_movement_cnt += 1;
     else
@@ -54,11 +56,8 @@ void gen_velocities(float *vel_x, float *acc_x, int16_t acc_offset, float t)
 
     if (no_movement_cnt >= 32)
         *(vel_x + 1) = 0.0;
-    else
-    {
-        *acc_x = conv_acc_lsb_to_meter(read_avg_acc_lsb(acc_offset));
+    else    
         *(vel_x + 1) = *vel_x + (*acc_x * t);
-    }
 
     *vel_x = *(vel_x + 1);
 }

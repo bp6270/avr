@@ -103,7 +103,7 @@ uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli)
 uint16_t steering_rad_to_pwm(float steering_rad)
 {
     float deg = 57.2958 * steering_rad;
-    uint16_t pwm_duration = (uint16_t) ((deg - 48.9788) / -0.03264);
+    int32_t pwm_duration = (int32_t) ((deg - 48.9788) / -0.03264);
 
     // bind to the acceptable PWM range
     if (pwm_duration < 1000)

@@ -6,6 +6,9 @@ void enable_timer(void)
 {
     // Enable 8-bit timer to operate at 125kHz (2ms/overflow)
     TCCR0B |= (1 << CS01) | (1 << CS00);
+	
+	// Make sure interrupt is fired after overflow
+	TIMSK0 = (1 << TOIE0);
 }
 
 //=============================================================================

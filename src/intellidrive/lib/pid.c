@@ -1,6 +1,6 @@
 #include "pid.h"
 
-uint16_t compute_corrected_yaw(float *ref_yaw, int16_t *yaw_offset, float t)
+float compute_corrected_yaw(float *ref_yaw, int16_t *yaw_offset, float t)
 {
     static float last_error = 0.0;
     static float error_sum = 0.0;

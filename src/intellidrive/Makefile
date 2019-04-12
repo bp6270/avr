@@ -29,8 +29,8 @@ HEADERS = $(SOURCES:.c=.h)
 
 # Flags
 CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LOCLIBDIR) -I$(LIBDIR)
-CFLAGS = -Os -g -std=gnu99 -Wall
-#CFLAGS = -O0 -ggdb -std=gnu99 -Wall
+#CFLAGS = -Os -g -std=gnu99 -Wall
+CFLAGS = -O0 -ggdb -std=gnu99 -Wall
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS = -Wl,-Map,$(TARGET).map
