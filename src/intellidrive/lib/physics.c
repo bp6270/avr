@@ -122,18 +122,24 @@ void gen_ref_yaw(
     float t
 )
 {
-    float K1 = 13.2727;
-    float K2 = 642.7287 / *(vel_x + 1);
-    float K3 = 0.0799;
-    float K4 = 7.6971 / *(vel_x + 1);
-    float K5 = 13.5343 / *(vel_x + 1);
-    float K6 = 2.4490;
-    float s = (*(ref_yaw + 2) - *(ref_yaw + 1)) / t;
-    float s2 = (*(ref_yaw + 2) - (2 * *(ref_yaw + 1)) + *ref_yaw) / (t*t);
+    if (*(vel_x + 1) != 0.0)
+    {
+        float K1 = 13.2727;
+        float K2 = 642.7287 / *(vel_x + 1);
+        float K3 = 0.0799;
+        float K4 = 7.6971 / *(vel_x + 1);
+        float K5 = 13.5343 / *(vel_x + 1);
+        float K6 = 2.4490;
+        float s = (*(ref_yaw + 2) - *(ref_yaw + 1)) / t;
+        float s2 = (*(ref_yaw + 2) - (2 * *(ref_yaw + 1)) + *ref_yaw) / (t*t);
 
-    *(tf_num) = K1*s + K2;
-    *(tf_den) = K3*s2 + K4*s + K5 + K6;
-    *(ref_yaw + 3) = (*steer_rad * *tf_num) / *tf_den;
+        *(tf_num) = K1*s + K2;
+        *(tf_den) = K3*s2 + K4*s + K5 + K6;
+        *(ref_yaw + 3) = (*steer_rad * *tf_num) / *tf_den;
+    }
+    else
+        *(ref_yaw + 3) = 0;
+    
     *ref_yaw = *(ref_yaw + 1);
     *(ref_yaw + 1) = *(ref_yaw + 2);
     *(ref_yaw + 2) = *(ref_yaw + 3);
