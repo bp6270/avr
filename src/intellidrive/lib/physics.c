@@ -49,9 +49,9 @@ void gen_velocities(float *vel_x, float *acc_x, int16_t acc_offset, float t)
 	
 	*acc_x = conv_acc_lsb_to_meter(read_avg_acc_lsb(acc_offset));
 
-    print_string("Vel acc: ");
-    print_val((int32_t) *acc_x);
-    print_string("\r\n");
+    //print_string("Vel acc: ");
+    //print_val((int32_t) *acc_x);
+    //print_string("\r\n");
 
     if (*acc_x == 0.0)
         no_movement_cnt += 1;
@@ -148,9 +148,9 @@ void gen_ref_yaw(
         *(tf_den) = 0.0;
     }
     
-    print_string("Ref Yaw: ");
-    print_val32((int32_t) *(ref_yaw + 3));
-    print_string("\r\n");
+    //print_string("Ref Yaw: ");
+    //print_val32((int32_t) *(ref_yaw + 3));
+    //print_string("\r\n");
 
     *ref_yaw = *(ref_yaw + 1);
     *(ref_yaw + 1) = *(ref_yaw + 2);

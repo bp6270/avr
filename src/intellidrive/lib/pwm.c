@@ -53,9 +53,9 @@ uint16_t get_pwm_signal_duration(void)
     sei();
     
     //Debug
-    print_string("PWM In: ");
-    print_val(steering_duration);
-    print_string("\r\n");
+    //print_string("PWM In: ");
+    //print_val(steering_duration);
+    //print_string("\r\n");
 
     return steering_duration;
 }
@@ -118,9 +118,9 @@ uint16_t steering_rad_to_pwm(float yaw_diff, float tf_num, float tf_den)
 
 void write_pwm(uint16_t pwm_duration)
 {
-    print_string("Wanted PWM Out: ");
-    print_val(pwm_duration);
-    print_string("\r\n");
+    //print_string("Wanted PWM Out: ");
+    //print_val(pwm_duration);
+    //print_string("\r\n");
     
     // bind to the acceptable PWM range
     if (pwm_duration < 1000)
@@ -131,9 +131,9 @@ void write_pwm(uint16_t pwm_duration)
 
     OCR1A = pwm_duration;
     
-    print_string("Actual PWM Out: ");
-    print_val(pwm_duration);
-    print_string("\r\n");
+    //print_string("Actual PWM Out: ");
+    //print_val(pwm_duration);
+    //print_string("\r\n");
 }
 
 //==============================================================================

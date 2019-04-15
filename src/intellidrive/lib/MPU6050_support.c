@@ -31,16 +31,16 @@ void calibrate_sensors(int16_t *acc_x_offset_addr, int16_t *yaw_offset_addr)
     *acc_x_offset_addr = 
         calibrate_sensor(MPU_ADDR, ACCEL_XOUT_H, ACCEL_XOUT_L);
     
-    print_string("Acc Offset: " );
-    print_val(*acc_x_offset_addr);
-    print_string("\r\n");
+    //print_string("Acc Offset: " );
+    //print_val(*acc_x_offset_addr);
+    //print_string("\r\n");
 
     *yaw_offset_addr =
         calibrate_sensor(MPU_ADDR, GYRO_ZOUT_H, GYRO_ZOUT_L);
 
-    print_string("Yaw Offset: " );
-    print_val(*yaw_offset_addr);
-    print_string("\r\n");
+    //print_string("Yaw Offset: " );
+    //print_val(*yaw_offset_addr);
+    //print_string("\r\n");
 }
 
 //=============================================================================
@@ -69,9 +69,9 @@ int16_t read_avg_acc_lsb(int16_t acc_offset)
     if ((avg_acc_lsb < 500) && (avg_acc_lsb > -500))
         avg_acc_lsb = 0;
     
-    print_string("Acc LSB: ");
-    print_val(avg_acc_lsb);
-    print_string("\r\n");
+    //print_string("Acc LSB: ");
+    //print_val(avg_acc_lsb);
+    //print_string("\r\n");
 
     return (int16_t) avg_acc_lsb;
 }
@@ -116,9 +116,9 @@ int16_t read_avg_yaw_lsb(int16_t yaw_offset)
     if ((avg_yaw_lsb < 300) && (avg_yaw_lsb > -300))
         avg_yaw_lsb = 0;
 
-    print_string("Yaw LSB: ");
-    print_val(avg_yaw_lsb);
-    print_string("\r\n");
+    //print_string("Yaw LSB: ");
+    //print_val(avg_yaw_lsb);
+    //print_string("\r\n");
     
     return (int16_t) avg_yaw_lsb;
 }

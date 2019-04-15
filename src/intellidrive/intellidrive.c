@@ -37,7 +37,7 @@ int main(void)
             _delay_us(TIMEOUT_US);
         
         reset_ovr_cnt_and_timer();
-        print_string("Gen Velocities\r\n");
+        //print_string("Gen Velocities\r\n");
         gen_velocities(vel_x, &acc_x, acc_x_offset, 0.002);
 
         // wait at least 8ms from beginning of loop (total of 10ms)
@@ -45,21 +45,15 @@ int main(void)
             _delay_us(TIMEOUT_US);
         
         reset_ovr_cnt_and_timer();
-        print_string("Gen ref yaw\r\n");
+        //print_string("Gen ref yaw\r\n");
         gen_ref_yaw(ref_yaw, vel_x, &steering_rad, &tf_num, &tf_den, 0.010);
-
-        // wait at least 4ms from beginning of loop (14ms)
-        while ((get_ovr_cnt() + timer_overhead) < 2)
-            _delay_us(TIMEOUT_US);
-            
-        reset_ovr_cnt_and_timer();
-        print_string("Gen Corr PWM\r\n");
+        //print_string("Gen Corr PWM\r\n");
         write_pwm(
             compute_corrected_yaw(
                 ref_yaw, 
                 pwm_duration, 
                 &yaw_offset, 
-                0.014, 
+                0.010, 
                 tf_num, 
                 tf_den
             )

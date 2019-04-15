@@ -23,16 +23,16 @@ uint16_t compute_corrected_yaw(
         // Get sensor yaw
         float imu_yaw = conv_yaw_to_rad(read_avg_yaw_lsb(*yaw_offset));
         
-        print_string("IMU yaw: ");
-        print_val32((int32_t) imu_yaw);
-        print_string("\r\n");
+        //print_string("IMU yaw: ");
+        //print_val32((int32_t) imu_yaw);
+        //print_string("\r\n");
 
         // Get error between ref and sensor
         float error = *(ref_yaw + 3) - imu_yaw;
         
-        print_string("Yaw Error: ");
-        print_val32((int32_t) error);
-        print_string("\r\n");
+        //print_string("Yaw Error: ");
+        //print_val32((int32_t) error);
+        //print_string("\r\n");
         
         float d_err = (error - last_error) / t;
 
@@ -41,9 +41,9 @@ uint16_t compute_corrected_yaw(
         
         float pid_out =  (kp * error) + (ki * error_sum) + (kd * d_err);
 
-        print_string("PID Out: ");
-        print_val32((int32_t) pid_out);
-        print_string("\r\n");
+        //print_string("PID Out: ");
+        //print_val32((int32_t) pid_out);
+        //print_string("\r\n");
         
         float corrected_pwm  = steering_rad_to_pwm(pid_out, tf_num, tf_den);
 
