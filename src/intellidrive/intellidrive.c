@@ -11,6 +11,7 @@ int main(void)
     float tf_num = 0.0;
     float tf_den = 0.0;
     int16_t timer_overhead = 0;
+    uint16_t pwm_duration = 0;
 
     bootstrap_hardware();
     calibrate_sensors(&acc_x_offset, &yaw_offset);
@@ -25,7 +26,9 @@ int main(void)
             timer_overhead = 0;
             continue;
         }
-
+       
+        pwm_duration = get_pwm_signal_duration();
+        steering_rad = pwm_to_steering_rad(pwm_duration);
         timer_overhead = get_ovr_cnt();
         
         // wait at least 2ms
@@ -33,6 +36,7 @@ int main(void)
             _delay_us(TIMEOUT_US);
         
         reset_ovr_cnt_and_timer();
+        print_string("Gen Velocities\r\n");
         gen_velocities(vel_x, &acc_x, acc_x_offset, 0.002);
 
         // wait at least 8ms from beginning of loop (total of 10ms)
@@ -40,7 +44,7 @@ int main(void)
             _delay_us(TIMEOUT_US);
         
         reset_ovr_cnt_and_timer();
-        steering_rad = pwm_to_steering_rad(get_pwm_signal_duration());
+        print_string("Gen ref yaw\r\n");
         gen_ref_yaw(ref_yaw, vel_x, &steering_rad, &tf_num, &tf_den, 0.010);
 
         // wait at least 4ms from beginning of loop (14ms)
@@ -48,9 +52,15 @@ int main(void)
             _delay_us(TIMEOUT_US);
             
         reset_ovr_cnt_and_timer();
+        print_string("Gen PID output\r\n");
         write_pwm(
-            steering_rad_to_pwm(
-                compute_corrected_yaw(ref_yaw, &yaw_offset, 0.014)
+            compute_corrected_yaw(
+                ref_yaw, 
+                pwm_duration, 
+                &yaw_offset, 
+                0.014, 
+                tf_num, 
+                tf_den
             )
         );
     }

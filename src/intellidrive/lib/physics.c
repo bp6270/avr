@@ -48,7 +48,11 @@ void gen_velocities(float *vel_x, float *acc_x, int16_t acc_offset, float t)
     static uint8_t no_movement_cnt = 0;
 	
 	*acc_x = conv_acc_lsb_to_meter(read_avg_acc_lsb(acc_offset));
-	
+
+    print_string("Vel acc: ");
+    print_val((int32_t) *acc_x);
+    print_string("\r\n");
+
     if (*acc_x == 0.0)
         no_movement_cnt += 1;
     else
@@ -122,7 +126,7 @@ void gen_ref_yaw(
     float t
 )
 {
-    if (*(vel_x + 1) != 0.0)
+    if ((*(vel_x + 1) > 0.0) || (*(vel_x + 1) < 0.0))
     {
         float K1 = 13.2727;
         float K2 = 642.7287 / *(vel_x + 1);
@@ -138,8 +142,16 @@ void gen_ref_yaw(
         *(ref_yaw + 3) = (*steer_rad * *tf_num) / *tf_den;
     }
     else
-        *(ref_yaw + 3) = 0;
+    {
+        *(ref_yaw + 3) = 0.0;
+        *(tf_num) = 0.0;
+        *(tf_den) = 0.0;
+    }
     
+    print_string("Ref Yaw: ");
+    print_val((int32_t) *(ref_yaw + 3));
+    print_string("\r\n");
+
     *ref_yaw = *(ref_yaw + 1);
     *(ref_yaw + 1) = *(ref_yaw + 2);
     *(ref_yaw + 2) = *(ref_yaw + 3);

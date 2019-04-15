@@ -2,6 +2,7 @@
 #define PHYSICS_H_
 
 #include "MPU6050_support.h"
+#include "USART.h"
 
 /* Division operator that rounds up result */
 int64_t divide_round_up(int64_t dividend, int64_t divisor);

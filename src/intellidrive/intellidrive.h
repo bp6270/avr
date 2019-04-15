@@ -11,6 +11,7 @@
 #include "pid.h"
 #include "pwm.h"
 #include "timer_support.h"
+#include "USART.h"
 
 #define TIMEOUT_US 200
 

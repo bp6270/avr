@@ -2,6 +2,7 @@
 #define MPU6050_SUPPORT_H_
 
 #include "MPU_6050.h"
+#include "USART.h"
 #include "twi.h"
 
 /* Finds zero-point of sensor in static condition */

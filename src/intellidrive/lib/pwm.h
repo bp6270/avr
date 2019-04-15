@@ -6,6 +6,7 @@
 #include <avr/interrupt.h>
 
 #include "physics.h"
+#include "USART.h"
 
 #define STEERING_FLAG 0x01
 
@@ -28,7 +29,11 @@ float pwm_to_steering_rad(uint16_t steering_duration);
 uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli);
 
 /* Converts rad to bounded PWM duration using floating point */
-uint16_t steering_rad_to_pwm(float steering_rad);
+uint16_t steering_rad_to_pwm(
+    float yaw_diff, 
+    float tf_num, 
+    float tf_den
+);
 
 /* Writes out PWM signal to OCR1A register */
 void write_pwm(uint16_t pwm_duration);

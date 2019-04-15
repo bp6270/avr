@@ -51,6 +51,11 @@ uint16_t get_pwm_signal_duration(void)
     cli();
     uint16_t steering_duration = shared_steering_duration;
     sei();
+    
+    //Debug
+    print_string("PWM In: ");
+    print_val(steering_duration);
+    print_string("\r\n");
 
     return steering_duration;
 }
@@ -100,19 +105,28 @@ uint16_t steering_rad_milli_to_pwm(int16_t steering_rad_milli)
 
 //==============================================================================
 
-uint16_t steering_rad_to_pwm(float steering_rad)
+uint16_t steering_rad_to_pwm(
+    float yaw_diff, 
+    float tf_num, 
+    float tf_den
+)
 {
+    float steering_rad = (tf_den * yaw_diff) / tf_num;
     float deg = 57.2958 * steering_rad;
-    int32_t pwm_duration = (int32_t) ((deg - 48.9788) / -0.03264);
+    int32_t pwm_out = (int32_t) ((deg - 48.9788) / -0.03264);
+
+    print_string("Gen PWM out: ");
+    print_val(pwm_out);
+    print_string("\r\n");
 
     // bind to the acceptable PWM range
-    if (pwm_duration < 1000)
+    if (pwm_out < 1000)
         return 1000;
 
-    if (pwm_duration > 2000)
+    if (pwm_out > 2000)
         return 2000;
 
-     return pwm_duration;
+     return pwm_out;
 }
 
 //==============================================================================
@@ -120,6 +134,10 @@ uint16_t steering_rad_to_pwm(float steering_rad)
 void write_pwm(uint16_t pwm_duration)
 {
     OCR1A = pwm_duration;
+
+    print_string("PWM Out: ");
+    print_val(pwm_duration);
+    print_string("\r\n");
 }
 
 //==============================================================================
