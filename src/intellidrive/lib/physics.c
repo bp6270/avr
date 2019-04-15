@@ -139,7 +139,7 @@ void gen_ref_yaw(
 
         *(tf_num) = K1*s + K2;
         *(tf_den) = K3*s2 + K4*s + K5 + K6;
-        *(ref_yaw + 3) = (*steer_rad * *tf_num) / *tf_den;
+        *(ref_yaw + 3) = *steer_rad * (*tf_num / *tf_den);
     }
     else
     {
@@ -149,7 +149,7 @@ void gen_ref_yaw(
     }
     
     print_string("Ref Yaw: ");
-    print_val((int32_t) *(ref_yaw + 3));
+    print_val32((int32_t) *(ref_yaw + 3));
     print_string("\r\n");
 
     *ref_yaw = *(ref_yaw + 1);

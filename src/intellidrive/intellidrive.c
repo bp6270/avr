@@ -27,6 +27,7 @@ int main(void)
             continue;
         }
        
+        print_string("Get PWM In\r\n");
         pwm_duration = get_pwm_signal_duration();
         steering_rad = pwm_to_steering_rad(pwm_duration);
         timer_overhead = get_ovr_cnt();
@@ -52,7 +53,7 @@ int main(void)
             _delay_us(TIMEOUT_US);
             
         reset_ovr_cnt_and_timer();
-        print_string("Gen PID output\r\n");
+        print_string("Gen Corr PWM\r\n");
         write_pwm(
             compute_corrected_yaw(
                 ref_yaw, 
