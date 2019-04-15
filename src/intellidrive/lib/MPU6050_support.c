@@ -63,7 +63,8 @@ int16_t read_avg_acc_lsb(int16_t acc_offset)
 
     avg_acc_lsb = avg_acc_lsb >> 6;
     avg_acc_lsb -= (int32_t) acc_offset;
-    avg_acc_lsb += ACCEL_XOUT_OFFSET;
+    //avg_acc_lsb += ACCEL_XOUT_OFFSET;
+    avg_acc_lsb -= 500;
 
     if ((avg_acc_lsb < 500) && (avg_acc_lsb > -500))
         avg_acc_lsb = 0;
@@ -110,6 +111,7 @@ int16_t read_avg_yaw_lsb(int16_t yaw_offset)
 
     avg_yaw_lsb = avg_yaw_lsb >> 6;
     avg_yaw_lsb -= (int32_t) (yaw_offset + GYRO_Z_OFFSET);
+    avg_yaw_lsb += 700;
 
     if ((avg_yaw_lsb < 300) && (avg_yaw_lsb > -300))
         avg_yaw_lsb = 0;
